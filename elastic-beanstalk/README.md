@@ -19,20 +19,16 @@ The key fingerprint is:
 $ chmod 400 key*
 ```
 
+- copy ssh key
+
+Edit main.tf `aws_key_pair` resource, and set `public_key` value as the key.pub content.   
+
 - run terraform
 
 ```shell
 $ terraform init
 $ terraform plan
 $ terraform apply
-```
-
-SSH connect
----
-
-```shell
-$ terraform output ip
-$ ssh -i "key" ec2-user@<ip address>
 ```
 
 Clean up
@@ -45,7 +41,6 @@ $ terraform destroy
 Reference
 ---
 
-- https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
-- https://github.com/terraform-aws-modules/terraform-aws-ec2-instance/blob/master/examples/basic/main.tf  
-- https://letslearndevops.com/2018/08/23/terraform-get-latest-centos-ami/
-- https://dev.to/aakatev/deploy-ec2-instance-in-minutes-with-terraform-ip2
+- https://github.com/tomfa/terraform-sandbox
+- https://gist.github.com/tomfa/6fc429af5d598a85e723b3f56f681237
+- https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.S3.html (delete s3 created by eb)
