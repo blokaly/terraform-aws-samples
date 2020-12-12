@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "ap-southeast-1"
+  region = var.region
 }
 
 data "aws_vpc" "default" {
@@ -23,6 +23,7 @@ data "aws_subnet" "private-subnet" {
 
 data "aws_security_group" "default-sg" {
   vpc_id = data.aws_vpc.default.id
+  name = "my-test-elastic-beanstalk-env"
 }
 
 module "rds_cluster" {
