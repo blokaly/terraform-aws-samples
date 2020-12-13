@@ -18,7 +18,7 @@ loadbalancer_type = "application"
 
 availability_zone_selector = "Any 2"
 
-instance_type = "t3.nano"
+instance_type = "t3.micro"
 
 autoscale_min = 1
 
