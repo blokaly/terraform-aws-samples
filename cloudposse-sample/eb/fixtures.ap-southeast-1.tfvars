@@ -86,3 +86,5 @@ env_vars = {
   "DB_USERNAME"     = "root"
   "DB_PASSWORD"     = "password"
 }
+
+stream_logs = false

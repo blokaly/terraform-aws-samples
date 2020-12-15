@@ -96,6 +96,7 @@ module "elastic_beanstalk_environment" {
 
   additional_settings = var.additional_settings
   env_vars            = var.env_vars
+  enable_stream_logs  = var.stream_logs
 
   extended_ec2_policy_document = data.aws_iam_policy_document.minimal_s3_permissions.json
   prefer_legacy_ssm_policy     = false
