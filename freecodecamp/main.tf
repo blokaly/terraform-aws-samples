@@ -1,3 +1,15 @@
+# Store terraform state remotely on terraform cloud
+terraform {
+  backend "remote" {
+    hostname      = "app.terraform.io"
+    organization  = "blokaly"
+
+    workspaces {
+      name = "test"
+    }
+  }
+}
+
 provider "aws" {
   region = "ap-east-1"
   profile = "default"
@@ -36,13 +48,28 @@ resource "aws_route_table" "prod-route-table" {
 }
 
 # 4. Create a Subnet
+
+variable "subnet_prefix" {
+  description = "cidr block for the subnet"
+}
+
 resource "aws_subnet" "subnet-1" {
-  cidr_block = "10.0.1.0/24"
+  cidr_block = var.subnet_prefix[0].cidr_block
   vpc_id = aws_vpc.production-vpc.id
   availability_zone = "ap-east-1a"
 
   tags = {
-    Name = "prod-subnet"
+    Name = var.subnet_prefix[0].name
+  }
+}
+
+resource "aws_subnet" "subnet-2" {
+  cidr_block = var.subnet_prefix[1].cidr_block
+  vpc_id = aws_vpc.production-vpc.id
+  availability_zone = "ap-east-1a"
+
+  tags = {
+    Name = var.subnet_prefix[1].name
   }
 }
 
@@ -112,6 +139,10 @@ resource "aws_eip" "one" {
   depends_on = [aws_internet_gateway.gw]
 }
 
+output "server_public_ip" {
+  value = aws_eip.one.public_ip
+}
+
 # 9. Create Ubuntu server and install/enable apache2
 resource "aws_instance" "web-server-instance" {
   ami = "ami-81e2a0f0"
@@ -134,4 +165,12 @@ resource "aws_instance" "web-server-instance" {
   tags = {
     Name = "web-server"
   }
+}
+
+output "server_private_ip" {
+  value = aws_instance.web-server-instance.private_ip
+}
+
+output "server_id" {
+  value = aws_instance.web-server-instance.id
 }
